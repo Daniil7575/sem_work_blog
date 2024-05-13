@@ -1,0 +1,52 @@
+{% load static %}
+{% load bootstrap5 %}
+{% load blog_app_tags %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "posts/css/styles.css" %}">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <header class="p-3" style="background-color: #212529;">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="{% url 'home' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+              <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><rect width="40px" height="32px" fill="white"/>
+                <text x="4" y="23" font-family="Verdana" font-size="20" fill="#212529" stroke-width="2">MD
+                </text></svg>
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="{% url 'home' %}" class="nav-link px-2 bl-hover selected">Home</a></li>
+              {% if request.user.is_authenticated %} 
+                <li><a href="{% url 'account:profile_edit' request.user.id %}" class="nav-link px-2 bl-hover">Edit profile</a></li> 
+              {% endif %}
+            </ul>
+            <div class="text-end">
+              {% if request.user.is_authenticated %}
+              <a class="text-link btn user-profile" href="{% url 'account:profile_detail' request.user.id %}">{{ request.user.username }}</a>
+                <a href="{% url 'account:logout' %}"><button type="button" class="btn btn-outline-light me-2">Logout</button></a>
+              {% else %}
+                <a href="{% url 'account:login' %}"><button type="button" class="btn btn-outline-light  me-2">Login</button></a>
+                <a href="{% url 'account:register' %}"<button type="button" class="btn sign-up">Sign-up</button></a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="content">
+        {% block content %}
+        {% endblock content %}
+      </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% for p in posts %}
+    <div class="recent-posts">
+        <div class="recent-post overflow ">
+            <a class="text-link" href="{{ p.get_absolute_url }}">{{ p.title|truncatewords:15 }}</a>
+        </div>
+        <div class="post-time dates">
+            {{ p.published }}
+        </div>
+        {% if not forloop.last %}
+            <div class="line"></div>
+        {% endif %}
+    </div>
+{% endfor %}

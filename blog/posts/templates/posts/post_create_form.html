@@ -1,0 +1,17 @@
+{% extends 'posts/base.html' %}
+{% block title %}Новый пост{% endblock title %}
+{% block content %}
+    <div class="post-creation-wrapper">
+        <form class="post-create-form" action="." method="post">
+            {% csrf_token %} 
+            {% for field in form  %}
+                <div class="{{ field.name }}-post-create">
+                    {{ field.label }}:
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            <button class="comment-form-button" type="submit">Опубликовать</button>
+        </form>
+    </div>
+{% endblock content %}

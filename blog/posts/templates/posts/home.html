@@ -1,0 +1,71 @@
+{% extends 'posts/base.html' %}
+{% load static %}
+{% block title %}Блог{% endblock title %}
+{% block content %}
+<div class="home-page-wrapper infinite-container">
+    {% if request.user.is_authenticated %}
+    <a class="width-100 margin-bott-10px" href="{% url 'post_create' %}"><button class="new-post width-100">+ Создать
+            новый пост</button></a>
+    {% endif %}
+
+    {% for p in posts %}
+    <div class="infinite-item">
+        <div class="element">
+            <a class="text-link" href="{{ p.get_absolute_url }}">
+                <h3 class="overflow">{{ p.title }}</h3>
+            </a>
+        </div>
+        <span class="creation-date element">{{ p.published }}</span>
+
+        <div class="post-author-rating element">
+            <span class="author overflow">Автор: {{ p.author.username }}</span>
+            {% with p.rating as rate %}
+            <span class="rating 
+                        {% if rate > 0 %}
+                            good
+                        {% else %}
+                            bad
+                        {% endif %}
+                    ">★ {{ rate }}</span>
+            {% endwith %}
+
+        </div>
+        <div class="post-body element">
+            <span class="post-text">{{ p.body|truncatewords:50 }}</span>
+        </div>
+        <span class="last-modified-date element">Последнее изменение: {{ p.modified }}</span>
+
+    </div>
+    {% endfor %}
+</div>
+
+<script src="{% static 'posts/js/jquery.waypoints.min.js' %}"></script>
+<script src="/static/posts/js/infinite.min.js"></script>
+
+<script>
+    const container = document.querySelector('.infinite-container');
+
+    var next_page_number = {{ page_obj.next_page_number }}
+    function load_pages(numImages = 10) {
+        $.ajax({
+            url: `{% url 'home' %}?page=${next_page_number}`,
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                var cont = $($.parseHTML(data)).find(".infinite-item")
+                container.appendChild
+                cont.each(function(){
+                    container.appendChild(this)
+                })
+                next_page_number++;
+            }
+        })
+    }
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+            load_pages();
+        }
+    })
+</script>
+{% endblock content %}

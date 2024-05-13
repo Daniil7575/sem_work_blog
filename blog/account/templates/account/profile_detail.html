@@ -1,0 +1,57 @@
+{% extends 'posts/base.html' %}
+{% block title %}{{ request.user.username }}{% endblock title %}
+{% load blog_app_tags %}
+{% load static %}
+{% block content %}
+    <div class="profile-detail-wrapper">   
+        <div class="image-last-activity">
+            <div class="image-section section">
+                <h4 class="text-row-header">Фотография</h4>
+                {% with userprof.profile_image as photo %}
+                    {% if photo %}
+                        <img class="avatar" src="{{ photo.url }}" alt="Ваша фотография">
+                    {% else %}
+                        <div class="avatar">Ваша фотография</div>
+                    </svg>
+                    {% endif %}
+                {% endwith %}
+                
+            </div> 
+            <div class="latest-posts-section section">
+                <h4 class="text-row-header">Последние публикации</h4>
+                <div class="last-pubs">
+                    {% last_activity userprof.user %}
+                </div>
+            </div>
+        </div>
+    
+        <div class="info-section section">
+            <h4 class="text-row-header">Информация</h4>
+            <div class="text-row">
+                <span class="label">Логин: </span>
+                <span class="text">{{ userprof.user.username }}</span>
+            </div>
+    
+            <div class="text-row">
+                <span class="label">Эл. почта: </span>
+                <span class="text">{{ userprof.user.email }}</span>
+            </div>
+    
+            <div class="text-row">
+                <span class="label">Имя: </span>
+                <span class="text">{{ userprof.user.first_name }}</span>
+                
+            </div>
+    
+            <div class="text-row">
+                <span class="label">Фамилия: </span>
+                <span class="text">{{ userprof.user.last_name }}</span>
+            </div>
+    
+            <div class="text-row">
+                <span class="label">Дата рождения: </span>
+                <span class="text">{{ userprof.date_of_birth }}</span>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

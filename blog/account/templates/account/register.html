@@ -1,0 +1,23 @@
+{% extends 'posts/base.html' %}
+{% block title %}Регистрация{% endblock title %}
+{% block content %}
+    <div class="register-wrapper">
+        <h3>Создайте аккаунт MD</h3>
+        <form class="register-form" action="{% url 'account:register' %}" method="post">
+            {% csrf_token %}
+            <div class="errors">
+                {% for _, val in user_form.errors.items %}
+                <strong class="error">{{ val|striptags }}</strong>
+            {% endfor %}
+            </div>
+            {% for field in user_form %}
+                <div class="{{ field.label }} input-container">
+                    <div class="field-label">{{ field.label }}</div>{{ field }} <div class="error">{{ field.errors }}</div> 
+                </div>
+            {% endfor %}
+            <div class="submit-button">
+                <button type="submit">Зарегистрироваться</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
